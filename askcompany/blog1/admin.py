@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Post
 
-# Register your models here.
+#등록방법1 - 기본 ModelAdmin 으로 동작
+admin.site.register(Post)
