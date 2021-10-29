@@ -7,6 +7,17 @@
     <title>Document</title>
 </head>
 <body>
-    {{ post_list }}
+    <table>
+        <tbody>
+            {% for post in post_list %}
+            <tr>
+                <td>
+                    {{ post.message }}
+                    {{ post.photo }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+    </table>
 </body>
 </html>
