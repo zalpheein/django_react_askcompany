@@ -1,6 +1,10 @@
+from django.conf import settings
 from django.db import models
+from django.db.models.deletion import CASCADE
 
 class Post(models.Model):
+
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=CASCADE)
     message = models.TextField()
     # 실제 저장 폴더
     # root/앱이름/settings.MEDIA_ROOT설정값=media/앱이름/모델명/images/%Y/%m/%d/ 경로에 이미지 파일들 저장
@@ -29,8 +33,13 @@ class Post(models.Model):
 
 
 
+class Comment(models.Model):
+    #post_id 라는 필드가 실제로 생성됨
+    post = models.ForeignKey(Post, on_delete=CASCADE)
+    message = models.TextField()
 
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 

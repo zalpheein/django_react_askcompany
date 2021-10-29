@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Post
+from .models import Post, Comment
 
 #등록방법1 - 기본 ModelAdmin 으로 동작
 #admin.site.register(Post)
@@ -39,6 +39,9 @@ class PostAdmin(admin.ModelAdmin):
         return f"{len(post.message)} 글짜"
 
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
 
 
 
