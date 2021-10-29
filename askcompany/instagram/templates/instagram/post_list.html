@@ -22,9 +22,10 @@
                 </td>
                 <td>
                     {% if post.photo %}
-                        {{ post.photo.url }}
+                        <img src="{{ post.photo.url }}" alt="" style="width:100px;">
+                        
                     {% else %}
-                        No photo                        
+                        No photo
                     {% endif %}
                 </td>
                 <td>
