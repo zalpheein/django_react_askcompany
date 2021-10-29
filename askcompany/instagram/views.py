@@ -6,7 +6,7 @@ def post_list(request):
     q = request.GET.get('q', '')
 
     if q:
-        qs.filter(messages__icontains=q)
+        qs = qs.filter(message__icontains=q)
 
     return render(request, 'instagram/post_list.html', {
         'post_list': qs,
