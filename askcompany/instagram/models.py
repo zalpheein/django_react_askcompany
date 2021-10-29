@@ -7,8 +7,12 @@ class Post(models.Model):
     # 단, 로컬 파일명으로 저장 되므로.. 함수를 사용하여 파일명을 변경 가능함
     photo = models.ImageField(blank=True, upload_to='instagram/post/images/%Y/%m/%d/')
     is_public = models.BooleanField(default=False, verbose_name='공개여부')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-id']
 
     #__str__ 함수는 객체를 대표하는 문자열 표현을 의미
     def __str__(self):
