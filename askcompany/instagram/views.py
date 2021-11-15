@@ -1,3 +1,5 @@
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse
 from django.shortcuts import render
 from .models import Post
 
@@ -14,6 +16,10 @@ def post_list(request):
         'q': q,
     })
 
+
+# 파이썬 3.6부터 지원하는 타입힌트 기능 예시
+def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
+    pass
 
 
 
