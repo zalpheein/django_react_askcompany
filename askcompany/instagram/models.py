@@ -7,9 +7,10 @@ class Post(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=CASCADE, related_name="instagram_post_set")
     message = models.TextField()
-    # 실제 저장 폴더
-    # root/앱이름/settings.MEDIA_ROOT 설정값=media/앱이름/모델명/images/%Y/%m/%d/ 경로에 이미지 파일들 저장
-    # 단, 로컬 파일명으로 저장 되므로.. 함수를 사용하여 파일명을 변경 가능함
+
+    # 실제 저장 폴더 : 
+    # root/settings.MEDIA_ROOT 에 정의된 위치
+    # 예) root/media/앱이름/images/%Y/%m/%d/ 폴더 위치에 이미지 파일 저장
     photo = models.ImageField(blank=True, upload_to='instagram/post/images/%Y/%m/%d/')
 
     # ManyToManyField 지정 방법2 +++++++

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 
 # 등록방법1 - 기본 ModelAdmin 으로 동작
 # admin.site.register(Post)
@@ -43,7 +43,9 @@ class CommentAdmin(admin.ModelAdmin):
     pass
 
 
-
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    pass
 
 
 
