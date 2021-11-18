@@ -19,7 +19,10 @@ def post_list(request):
 
 # 파이썬 3.6부터 지원하는 타입힌트 기능 예시
 def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
-    pass
+    post = Post.objects.get(pk=pk)
+    return render(request, 'instagram/post_detail.html', {
+        'post': post
+    })
 
 
 
