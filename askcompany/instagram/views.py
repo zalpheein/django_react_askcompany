@@ -15,11 +15,15 @@ def post_list(request):
         'post_list': qs,
         'q': q,
     })
-
+ 
 
 # 파이썬 3.6부터 지원하는 타입힌트 기능 예시
 def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
-    post = Post.objects.get(pk=pk)
+    try:
+        post = Post.objects.get(pk=pk)
+    except:
+        raise Http404
+
     return render(request, 'instagram/post_detail.html', {
         'post': post
     })
