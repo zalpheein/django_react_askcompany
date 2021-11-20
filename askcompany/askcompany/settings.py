@@ -53,7 +53,11 @@ ROOT_URLCONF = 'askcompany.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # File system Template loader...이것은 앱의 templates 폴더가 아님..
+            # 앱에 속한 templates 폴더 내의 html 이 아닌... 전혀 새로운 어떠한 html 페이지와 연결
+            os.path.join(BASE_DIR, 'askcompany', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

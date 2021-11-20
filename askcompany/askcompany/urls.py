@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 # 사용자 정의 urlpatterns
 api_v1_urlpatterns = [
@@ -9,6 +10,9 @@ api_v1_urlpatterns = [
 ]
 
 urlpatterns = [
+    # root.settings.TEMPLATES 에 정의 되어야 함.....
+    path('', TemplateView.as_view(template_name='root.html'), name='root'),
+
     path('admin/', admin.site.urls),
 
     # 사용자 정의 urlpatterns 추가 예시
