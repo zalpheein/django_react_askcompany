@@ -17,7 +17,7 @@ from .models import Post
 #         'q': q,
 #     })
 
-post_list = ListView.as_view(model=Post)
+post_list = ListView.as_view(model=Post, paginate_by=5)
 
 
 
