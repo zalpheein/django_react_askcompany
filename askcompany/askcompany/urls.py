@@ -15,7 +15,12 @@ urlpatterns = [
     # path('', TemplateView.as_view(template_name='root.html'), name='root'),
 
     # 기본뷰.RedirectView 예시
-    path('', RedirectView.as_view(url='instagram'), name='root'),
+    # path('', RedirectView.as_view(url='instagram'), name='root'),
+    # 또는
+    path('', RedirectView.as_view(
+        #url='instagram',
+        pattern_name='instagram:post_list',
+        ), name='root'),
 
 
 
