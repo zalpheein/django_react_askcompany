@@ -56,6 +56,7 @@ TEMPLATES = [
         'DIRS': [
             # File system Template loader...이것은 앱의 templates 폴더가 아님..
             # 앱에 속한 templates 폴더 내의 html 이 아닌... 전혀 새로운 어떠한 html 페이지와 연결
+            # 3번째 인자의 명칭은 aaa 라고 해도 무방함
             os.path.join(BASE_DIR, 'askcompany', 'templates'),
         ],
         'APP_DIRS': True,
