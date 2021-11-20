@@ -31,9 +31,28 @@ def post_list(request):
 #         'post': post
 #     })
 
+
 post_detail = DetailView.as_view(model=Post)
 
 
+# 상기의 post_detail 은 모든 post를 보여준다.. 
+#   로그인 여부와도 상관 없고..
+#   공개 여부와도 상관 없이.. 그냥 모두다...
+#   그런데.... 만약, 로그인 허용된 사람들에게만 보여 주려고 할 경우엔?
+#   또는.... 만약, 공개 허용된 것만 보여 주려고 할 경우엔?
+#   이럴때는, 별도로 클래스를 만들고...get_queryset() 함수를 별도로 구현 해야 한다....
+# class PostDetailView(DetailView):
+#     model = Post
+
+#     # 공개로 지정된 post 만 가져오는 방법
+#     # queryset = Post.objects.filter(is_public=True)
+
+#     # 로그인 된 사용자만 post 를 보여주려면?
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+#         if not self.request.user.is_authenticated:
+#             qs = qs.filter(is_public=True)
+#         return qs
 
 
 
