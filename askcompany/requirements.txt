@@ -1,7 +1,8 @@
 django==3.2.5
-pillow==8.3.0           #장고가 media 파일을 다르는 방법
-django-extentions       #Queryset의 정렬 및 범위 조건
-django-debug-toolbar    #django-debug-toolbar를 통한 SQL 디버깅
+pillow==8.3.0           # djagno가 media 파일을 다르는 방법
+django-extentions       # Queryset의 정렬 및 범위 조건
+django-debug-toolbar    # django-debug-toolbar를 통한 SQL 디버깅
+django-bootstrap4       # django용 bootstrap4를 설치....readthedocs.io 에서 설치 참조
 
 
 
