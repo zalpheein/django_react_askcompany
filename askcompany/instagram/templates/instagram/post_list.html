@@ -19,6 +19,9 @@
             {% for post in post_list %}
             <tr>
                 <td>
+                    {{ post.pk }}
+                </td>
+                <td>
                     {% if post.photo %}
                         <img src="{{ post.photo.url }}" alt="" style="width:100px;">
                         
