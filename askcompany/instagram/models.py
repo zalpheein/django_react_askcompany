@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.deletion import CASCADE
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -23,6 +24,9 @@ class Post(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+         return reverse('instagram:post_detail', args=[self.pk])
 
     class Meta:
         ordering = ['-id']
