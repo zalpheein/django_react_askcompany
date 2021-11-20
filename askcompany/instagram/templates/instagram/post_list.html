@@ -33,7 +33,15 @@
                     {% endif %}
                 </td>
                 <td>
-                    {{ post.message }}
+<!--                <a href="/instagram/{{ post.pk }}/">-->
+<!--                    {{ post.message }}-->
+<!--                </a>-->
+
+<!--                URL Reverse 예제 -->
+                    <a href="{% url 'instagram:post_detail' post.pk %}">
+                        {{ post.message }}
+                    </a>
+
                 </td>
             </tr>
             {% endfor %}
