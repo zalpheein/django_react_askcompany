@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR 의 경로는.... django_react_akscompay/ 폴더임
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -17,7 +17,8 @@ SECRET_KEY = 'django-insecure-k^w0=emxzw85bi@6fuh0q&z!k72kkg@!fc(zqh1^a8+(cvc0^b
 DEBUG = True
 
 ALLOWED_HOSTS = [
-        '64d7-121-130-221-29.ngrok.io',
+    '127.0.0.1',
+    '64d7-121-130-221-29.ngrok.io',
     ]
 
 
@@ -130,8 +131,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+
+
+
+
 STATIC_URL = '/static/'
+# STATIC_URL = 'https://s3.aws.com/afadfa/r4r45cx/rkrkaj/static/' 로 설정 될 수 있음
+
+# 개별 app 에 소속된 static 파일 저장 경로들이 최종적으로 모이는 장소
+# 즉, manage.py가 있는 폴더가 BASE_DIR 경로임
+# python manage.py collectstatic 명령어로 static 파일들이 모아짐
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'askcompany', 'static')  # 프로젝트 전반에서 사용할 static 파일 저장 경로
+]
+
+
+
+
+
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
