@@ -139,7 +139,7 @@ STATIC_URL = '/static/'
 # STATIC_URL = 'https://s3.aws.com/afadfa/r4r45cx/rkrkaj/static/' 로 설정 될 수 있음
 
 # 개별 app 에 소속된 static 파일 저장 경로들이 최종적으로 모이는 장소
-# 즉, manage.py가 있는 폴더가 BASE_DIR 경로임
+# 즉, manage.py가 있는 폴더가 BASE_DIR 경로임 <================================
 # python manage.py collectstatic 명령어로 static 파일들이 모아짐
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
