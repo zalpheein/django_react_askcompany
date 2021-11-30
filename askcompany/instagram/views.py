@@ -3,6 +3,9 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from .models import Post
+# .forms 는 현재 경로를 의미
+# form_PostForm 는 form_PostForm.py 를 의미
+# import PostForm 의 PostForm 는 form_PostForm.py 파일의 class PostForm(forms.ModelForm) 객체인  PostForm 을 의미
 from .forms.form_PostForm import PostForm
 
 
@@ -10,6 +13,7 @@ def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
+            # 검증에 성공한 값들을 dict 타입으로 반환
             post = form.save()
             return redirect(post)
     else:
