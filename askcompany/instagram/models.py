@@ -1,13 +1,19 @@
 from django.conf import settings
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.urls import reverse
+
+# min_length_validator = MinLengthValidator(3)
+# min_length_validator("he")      # he 라는 두 글자만 입력 되었기에.....forms.ValidationError 오류 발생
 
 
 class Post(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=CASCADE, related_name="instagram_post_set")
-    message = models.TextField()
+    message = models.TextField(
+        validators=[MinLengthValidator(10)]
+    )
 
     # 실제 저장 폴더 : 
     # root/settings.MEDIA_ROOT 에 정의된 위치
@@ -25,9 +31,6 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def get_absolute_url(self):
-         return reverse('instagram:post_detail', args=[self.pk])
-
     class Meta:
         ordering = ['-id']
 
@@ -37,6 +40,9 @@ class Post(models.Model):
         # return f"Custom Post object ({})".format(self.id)
         return self.message
     
+    def get_absolute_url(self):
+         return reverse('instagram:post_detail', args=[self.pk])
+
     # 어드민 리스트에 별도의 컬럼을 추가하는 경우
     def message_length(self):
         return len(self.message)
@@ -45,15 +51,13 @@ class Post(models.Model):
     message_length.short_description = "메시지 글자수"
 
 
-
 class Comment(models.Model):
-    #post_id 라는 필드가 실제로 생성됨
+    # post_id 라는 필드가 실제로 생성됨
     post = models.ForeignKey(Post, on_delete=CASCADE, related_name="instagram_comment_set")
     message = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
 
 class Tag(models.Model):

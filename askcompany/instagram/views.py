@@ -5,6 +5,11 @@ from django.views.generic import ListView, DetailView
 from .models import Post
 
 
+def post_new(request):
+    pass
+
+
+
 # def post_list(request):
 #     qs = Post.objects.all()
 #     q = request.GET.get('q', '')
