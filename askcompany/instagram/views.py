@@ -3,10 +3,13 @@ from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from .models import Post
-
+from .forms.form_PostForm import PostForm
 
 def post_new(request):
-    pass
+    form = PostForm()
+    return render(request, 'instagram/post_form.html', {
+        'form': form,
+    })
 
 
 
