@@ -30,6 +30,31 @@ def post_new(request):
         'form': form,
     })
 
+
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            # 검증에 성공한 값들을 dict 타입으로 반환
+            # post = Post(**form.cleaned_data)
+            post = form.save()
+
+            # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
+            # 있으므로 다음과 같이 호출 가능
+            # 즉, 등록 성공 시 상세뷰 페이지로 이동 노출 됨....
+            return redirect(post)
+            # 하지만, 등록 성공 시, 특정 url 로 가게 하려면??? success_url 을 따로 정의 하여 사용
+            # return redirect('/success_url/')
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'instagram/post_form.html', {
+        'form': form,
+    })
+
+
 # FBV 코딩
 # def post_list(request):
 #     qs = Post.objects.all()
@@ -47,12 +72,6 @@ def post_new(request):
 # CBV 코딩
 post_list = ListView.as_view(model=Post, paginate_by=5)
 
-
-
-
-
-
-
 # 파이썬 3.6부터 지원하는 타입힌트 기능 예시
 # FBV 예시 --> CBV 예시는 다음 항목에...
 # def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
@@ -69,8 +88,7 @@ post_list = ListView.as_view(model=Post, paginate_by=5)
 
 post_detail = DetailView.as_view(model=Post)
 
-
-# 상기의 post_detail 은 모든 post를 보여준다.. 
+# 상기의 post_detail 은 모든 post를 보여준다..
 #   로그인 여부와도 상관 없고..
 #   공개 여부와도 상관 없이.. 그냥 모두다...
 #   그런데.... 만약, 로그인 허용된 사람들에게만 보여 주려고 할 경우엔?
@@ -96,13 +114,3 @@ post_detail = DetailView.as_view(model=Post)
 #    이 함수에 사전 형태도 정의 해두면…템플릿 즉 html 파일에서 사용 가능
 #       def get_context_data(self):
 #           pass
-
-
-
-
-
-
-
-
-
-
