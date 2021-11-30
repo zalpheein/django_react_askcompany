@@ -4,12 +4,12 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.urls import reverse
 
+
 # min_length_validator = MinLengthValidator(3)
 # min_length_validator("he")      # he 라는 두 글자만 입력 되었기에.....forms.ValidationError 오류 발생
 
 
 class Post(models.Model):
-
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=CASCADE, related_name="instagram_post_set")
     message = models.TextField(
         validators=[MinLengthValidator(10)]
@@ -39,9 +39,9 @@ class Post(models.Model):
         # return f"Custom Post object ({self.id})"
         # return f"Custom Post object ({})".format(self.id)
         return self.message
-    
+
     def get_absolute_url(self):
-         return reverse('instagram:post_detail', args=[self.pk])
+        return reverse('instagram:post_detail', args=[self.pk])
 
     # 어드민 리스트에 별도의 컬럼을 추가하는 경우
     def message_length(self):
@@ -68,20 +68,3 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

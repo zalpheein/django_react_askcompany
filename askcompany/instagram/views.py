@@ -14,8 +14,15 @@ def post_new(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             # 검증에 성공한 값들을 dict 타입으로 반환
+            # post = Post(**form.cleaned_data)
             post = form.save()
+
+            # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어 있으므로 다음과 같이 호출 가능
+            # 즉, 등록 성공 시 상세뷰 페이지가 노출...
             return redirect(post)
+            # 하지만, 등록 성공 시, 특정 url 로 가게 하려면??? success_url 을 정의 하여 사용
+            # return redirect('/success_url/')
+
     else:
         form = PostForm()
 
