@@ -1,18 +1,25 @@
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from .models import Post
 from .forms.form_PostForm import PostForm
 
+
 def post_new(request):
-    form = PostForm()
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save()
+            return redirect(post)
+    else:
+        form = PostForm()
+
     return render(request, 'instagram/post_form.html', {
         'form': form,
     })
 
-
-
+# FBV 코딩
 # def post_list(request):
 #     qs = Post.objects.all()
 #     q = request.GET.get('q', '')
@@ -25,6 +32,8 @@ def post_new(request):
 #         'q': q,
 #     })
 
+
+# CBV 코딩
 post_list = ListView.as_view(model=Post, paginate_by=5)
 
 
