@@ -1,1 +1,1 @@
-from form_PostForm import *
+from .form_PostForm import *
