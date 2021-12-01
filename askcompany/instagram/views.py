@@ -35,6 +35,9 @@ def post_new(request):
             # 실제 디비에 저장 되는 시점
             post.save()
 
+            # 신규 message 생성
+            messages.success(request, '포스팅을 저장했습니다.')
+
             # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
             # 있으므로 다음과 같이 호출 가능
             # 즉, 등록 성공 시 상세뷰 페이지로 이동 노출 됨....
@@ -64,6 +67,9 @@ def post_edit(request, pk):
             # 검증에 성공한 값들을 dict 타입으로 반환
             # post = Post(**form.cleaned_data)
             post = form.save()
+
+            # 신규 message 생성
+            messages.success(request, '포스팅을 수정했습니다.')
 
             # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
             # 있으므로 다음과 같이 호출 가능
