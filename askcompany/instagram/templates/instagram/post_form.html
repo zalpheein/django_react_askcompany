@@ -9,7 +9,6 @@
         <input type="submit" value="저장" />
     </form>
     <hr>
-    {{ form.instance }}
     {% if form.instance %}
         <a href="{{ form.instance.get_absolute_url }}" class="btn btn-secondary">내용으로</a>
     {% endif %}
