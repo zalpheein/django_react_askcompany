@@ -22,6 +22,7 @@ def post_new(request):
             # 즉, @login_required 라는 장식자를 선언 해두어야 함
             # 사용자 정의 모델폼 PostForm 이 다채우지 못한 필수 입력값을 채워(여기서는 author 값) 저장 수행
             post.author = request.user
+            # 만약 IP 주소를 저장 해야할 경우, 모델에 해당 필드를 만들고... request.META['REMOTE_ADDR'] 값을 지정
             post.save()
 
             # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
