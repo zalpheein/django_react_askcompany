@@ -98,7 +98,7 @@ def post_edit(request, pk):
 
 
 # CBV 코딩
-# post_list = ListView.as_view(model=Post, paginate_by=5)
+post_list = ListView.as_view(model=Post, paginate_by=5)
 
 # 파이썬 3.6부터 지원하는 타입힌트 기능 예시
 # FBV 예시 --> CBV 예시는 다음 항목에...
