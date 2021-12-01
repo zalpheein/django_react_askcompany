@@ -28,7 +28,12 @@ class PostForm(forms.ModelForm):
         # 개별 field 에 대한 유효성 검증 로직을 추가 하려면 def clean_필드명() 함수를 추가로 정의
         # 이는 form.is_valid() 할때 자동 호출 됨
         def clean_message(self):
-            pass
+            message = self.cleaned_data.get['message']
+            if message:
+                # 검증 / 변환 로직 추가
+                # message 변수에 사용된 모든 영어 알파벳을 제거 하는 로직
+                message = re.sub(r'[a-zA-Z]+', '', message)
+            return message
 
         def clean_photo(self):
             pass
