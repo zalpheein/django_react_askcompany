@@ -1,11 +1,17 @@
 {% extends "instagram/layout.html" %}
 
 {% block content %}
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-        {{ form }}
-    </table>
-    <input type="submit" value="저장" />
-</form>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <input type="submit" value="저장" />
+    </form>
+    <hr>
+    {{ form.instance }}
+    {% if form.instance %}
+        <a href="{{ form.instance.get_absolute_url }}" class="btn btn-secondary">내용으로</a>
+    {% endif %}
+    <a href="{% url 'instagram:post_list' %}" class="btn btn-primary">목록</a>
 {% endblock %}
