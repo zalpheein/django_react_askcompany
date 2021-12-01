@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -19,6 +20,7 @@ def post_new(request):
             post = form.save(commit=False)
             # request.user = 로그인 사용자를 의미... 그러므로 post_new() 함수는 로그인이 선행되어야 함
             # 즉, @login_required 라는 장식자를 선언 해두어야 함
+            # 사용자 정의 모델폼 PostForm 이 다채우지 못한 필수 입력값을 채워(여기서는 author 값) 저장 수행
             post.author = request.user
             post.save()
 
