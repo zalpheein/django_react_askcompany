@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, Http404
@@ -40,9 +41,15 @@ def post_new(request):
         'form': form,
     })
 
+
 @login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+    # 여기는 게시글 수정이므로 해당 게시글 작성자와... 현 로그인 사용자가 동일한지 점검 로직 필요
+    if request.user != post.author:
+        messages.error(request, '작성자만 수정할 수 있습니다.')
+        return redirect(post)
 
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES, instance=post)
