@@ -32,6 +32,7 @@ class PostForm(forms.ModelForm):
             if message:
                 # 검증 / 변환 로직 추가
                 # message 변수에 사용된 모든 영어 알파벳을 제거 하는 로직
+                # import re 를 추가 해야 정규식 사용 가능
                 message = re.sub(r'[a-zA-Z]+', '', message)
             return message
 
