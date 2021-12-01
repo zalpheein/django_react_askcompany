@@ -49,6 +49,7 @@ def post_new(request):
 
     return render(request, 'instagram/post_form.html', {
         'form': form,
+        'post': None,
     })
 
 
@@ -82,6 +83,7 @@ def post_edit(request, pk):
 
     return render(request, 'instagram/post_form.html', {
         'form': form,
+        'post': post,
     })
 
 
