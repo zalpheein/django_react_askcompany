@@ -79,21 +79,22 @@ def post_edit(request, pk):
     })
 
 
-# FBV 코딩
-def post_list(request):
-    qs = Post.objects.all()
-    q = request.GET.get('q', '')
-
-    if q:
-        qs = qs.filter(message__icontains=q)
-
-    # 리스트 노출 시마다, message 신규 생성...큐에 쌓임.... 큐에 쌓인 메시지를 소비하는 루틴도 필요함.
-    messages.success(request, 'message 테스트')
-
-    return render(request, 'instagram/post_list.html', {
-        'post_list': qs,
-        'q': q,
-    })
+# # FBV 코딩
+# def post_list(request):
+#     qs = Post.objects.all()
+#     q = request.GET.get('q', '')
+#
+#     if q:
+#         qs = qs.filter(message__icontains=q)
+#
+#     # 리스트 노출 시마다, message 신규 생성...큐에 쌓임.... 큐에 쌓인 메시지를 소비하는 루틴도 필요함.
+#     # 아래 코드는 message 테스트 목적으로...
+#     # messages.success(request, 'message 테스트')
+#
+#     return render(request, 'instagram/post_list.html', {
+#         'post_list': qs,
+#         'q': q,
+#     })
 
 
 # CBV 코딩
