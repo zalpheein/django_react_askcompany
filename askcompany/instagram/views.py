@@ -9,14 +9,18 @@ from .models import Post
 from .forms.form_PostForm import PostForm
 
 
-
+@login_required
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             # 검증에 성공한 값들을 dict 타입으로 반환
             # post = Post(**form.cleaned_data)
-            post = form.save()
+            post = form.save(commit=False)
+            # request.user = 로그인 사용자를 의미... 그러므로 post_new() 함수는 로그인이 선행되어야 함
+            # 즉, @login_required 라는 장식자를 선언 해두어야 함
+            post.author = request.user
+            post.save()
 
             # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
             # 있으므로 다음과 같이 호출 가능
@@ -31,7 +35,7 @@ def post_new(request):
         'form': form,
     })
 
-
+@login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
