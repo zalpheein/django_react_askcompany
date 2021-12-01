@@ -34,6 +34,11 @@ class Post(models.Model):
     class Meta:
         ordering = ['-id']
 
+        # 복합 필드의 unique 보장을 위해 제한조건 거는 방법
+        # unique_together = [
+        #     ('server', 'username')
+        # ]
+
     # __str__ 함수는 객체를 대표하는 문자열 표현을 의미
     def __str__(self):
         # return f"Custom Post object ({self.id})"

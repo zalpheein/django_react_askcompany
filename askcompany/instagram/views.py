@@ -31,6 +31,8 @@ def post_new(request):
             # 만약 IP 주소를 저장 해야할 경우, 모델에 해당 필드를 만들고... request.META['REMOTE_ADDR'] 값을 지정
             # REMOTE_ADDR 관련 문서
             #   https://docs.djangoproject.com/en/3.2/ref/request-response/
+
+            # 실제 디비에 저장 되는 시점
             post.save()
 
             # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
@@ -110,12 +112,12 @@ post_list = ListView.as_view(model=Post, paginate_by=5)
 
 post_detail = DetailView.as_view(model=Post)
 
-# 상기의 post_detail 은 모든 post를 보여준다..
-#   로그인 여부와도 상관 없고..
-#   공개 여부와도 상관 없이.. 그냥 모두다...
-#   그런데.... 만약, 로그인 허용된 사람들에게만 보여 주려고 할 경우엔?
-#   또는.... 만약, 공개 허용된 것만 보여 주려고 할 경우엔?
-#   이럴때는, 별도로 클래스를 만들고...get_queryset() 함수를 별도로 구현 해야 한다....
+# 상기의 post_detail 은 모든 게시글을 보여준다..
+# 로그인 여부와도 상관 없고..
+# 공개 여부와도 상관 없이.. 그냥 모두다...
+# 그런데.... 만약, 로그인 허용된 사람들에게만 보여 주려고 할 경우엔?
+# 또는.... 만약, 공개 허용된 것만 보여 주려고 할 경우엔?
+# 이럴때는, 별도로 클래스를 만들고...get_queryset() 함수를 별도로 구현 해야 한다....
 
 # class PostDetailView(DetailView):
 #     model = Post
