@@ -16,8 +16,13 @@ def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            # 검증에 성공한 값들을 dict 타입으로 반환
+            # 검증에 성공한 값들을 사전(dict) 타입으로 반환
             # post = Post(**form.cleaned_data)
+
+            # 넘겨 받은 값을 수정 도는 변경 하려고 할 경우, form.cleaned_data 을 사용 할것.
+            # message = request.POST['필드명'] <== BAD
+            # message = form.cleaned_data['필드명'] <== GOOD
+
             post = form.save(commit=False)
             # request.user = 로그인 사용자를 의미... 그러므로 post_new() 함수는 로그인이 선행되어야 함
             # 즉, @login_required 라는 장식자를 선언 해두어야 함
