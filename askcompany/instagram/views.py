@@ -86,6 +86,20 @@ def post_edit(request, pk):
         'post': post,
     })
 
+@login_required
+def post_delete(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    # 삭제 확인 하는 폼을 하나 보여주고....확인 후 삭제
+    if request.method == "POST":
+        post.delete()
+
+    return render(request, 'instagram/post_confirm_delete.html', {
+        'post': post,
+    })
+
+
+
 
 # # FBV 코딩
 # def post_list(request):
