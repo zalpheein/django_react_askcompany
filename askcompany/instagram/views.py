@@ -94,6 +94,8 @@ def post_delete(request, pk):
     # 삭제 확인 하는 폼을 하나 보여주고....확인 후 삭제
     if request.method == "POST":
         post.delete()
+        messages.success(request, '포스팅을 삭제하였습니다.')
+        return redirect('instagram:post_list')
 
     return render(request, 'instagram/post_confirm_delete.html', {
         'post': post,
