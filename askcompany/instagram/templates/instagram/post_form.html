@@ -7,18 +7,17 @@
 <!--        <table>-->
 <!--            {{ form }}-->
 <!--        </table>-->
-<!--        <input type="submit" value="저장" />-->
 
+        # 폼의 레이아웃을 이쁘게....
         {% bootstrap_form form %}
-        {% buttons %}
-            <botton class="btn btn-primary">
-                저장
-            </botton>
-        {% endbuttons %}
+
+
+        <input type="submit" class="btn btn-primary" value="저장" />
+
 
     <hr>
+    <a href="{% url 'instagram:post_list' %}" class="btn btn-primary">목록</a>
     {% if post %}
         <a href="{{ post.get_absolute_url }}" class="btn btn-secondary">내용으로</a>
     {% endif %}
-    <a href="{% url 'instagram:post_list' %}" class="btn btn-primary">목록</a>
 {% endblock %}
