@@ -169,10 +169,17 @@ post_delete = PostDeleteView.as_view()
 
 
 # CBV 코딩
-post_list = ListView.as_view(model=Post, paginate_by=5)
+class PostListView(LoginRequiredMixin, ListView):
+    model = Post
+    paginate_by = 100
+
+
+# post_list = ListView.as_view(model=Post, paginate_by=5)
+post_list = PostListView.as_view()
+
 
 # 파이썬 3.6부터 지원하는 타입힌트 기능 예시
-# FBV 예시 --> CBV 예시는 다음 항목에...
+# FBV 코딩
 # def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
 #     # try:
 #     #     post = Post.objects.get(pk=pk)
@@ -184,9 +191,6 @@ post_list = ListView.as_view(model=Post, paginate_by=5)
 #         'post': post
 #     })
 
-# CBV 코딩
-post_detail = DetailView.as_view(model=Post)
-
 # 상기의 post_detail 은 모든 게시글을 보여준다..
 # 로그인 여부와도 상관 없고..
 # 공개 여부와도 상관 없이.. 그냥 모두다...
@@ -194,18 +198,19 @@ post_detail = DetailView.as_view(model=Post)
 # 또는.... 만약, 공개 허용된 것만 보여 주려고 할 경우엔?
 # 이럴때는, 별도로 클래스를 만들고...get_queryset() 함수를 별도로 구현 해야 한다....
 
-# class PostDetailView(DetailView):
-#     model = Post
+class PostDetailView(DetailView):
+    model = Post
 
-#     # 공개로 지정된 post 만 가져오는 방법
-#     # queryset = Post.objects.filter(is_public=True)
+    # 공개로 지정된 post 만 가져오는 방법
+    # queryset = Post.objects.filter(is_public=True)
 
-#     # 로그인 된 사용자만 post 를 보여주려면?
-#     def get_queryset(self):
-#         qs = super().get_queryset()
-#         if not self.request.user.is_authenticated:
-#             qs = qs.filter(is_public=True)
-#         return qs
+    # 로그인 된 사용자만 post 를 보여주려면?
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(is_public=True)
+        return qs
+
 
 #    만약, 템플릿(즉, html 파일)에 추가 내용을 전달 하려고 하면….
 #    get_context_data() 함수를 사용...
@@ -213,3 +218,7 @@ post_detail = DetailView.as_view(model=Post)
 #    이 함수에 사전 형태도 정의 해두면…템플릿 즉 html 파일에서 사용 가능
 #       def get_context_data(self):
 #           pass
+
+# CBV 코딩
+# post_detail = DetailView.as_view(model=Post)
+post_detail = PostDetailView.as_view()
