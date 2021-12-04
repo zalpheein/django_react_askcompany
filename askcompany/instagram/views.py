@@ -4,7 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 # .forms 는 현재 경로를 의미
 # form_PostForm 는 form_PostForm.py 를 의미
@@ -74,55 +75,79 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 post_new = PostCreateView.as_view()
 
 
-# FBV 코딩
-@login_required
-def post_edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+# FBV 코딩 - 게시글 수정
+# @login_required
+# def post_edit(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
+#
+#     # 여기는 게시글 수정이므로 해당 게시글 작성자와... 현 로그인 사용자가 동일한지 점검 로직 필요
+#     if request.user != post.author:
+#         messages.error(request, '작성자만 수정할 수 있습니다.')
+#         return redirect(post)
+#
+#     if request.method == "POST":
+#         form = PostForm(request.POST, request.FILES, instance=post)
+#         if form.is_valid():
+#             # 검증에 성공한 값들을 dict 타입으로 반환
+#             # post = Post(**form.cleaned_data)
+#             post = form.save()
+#
+#             # 신규 message 생성
+#             messages.success(request, '포스팅을 수정했습니다.')
+#
+#             # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
+#             # 있으므로 다음과 같이 호출 가능
+#             # 즉, 등록 성공 시 상세뷰 페이지로 이동 노출 됨....
+#             return redirect(post)
+#             # 하지만, 등록 성공 시, 특정 url 로 가게 하려면??? success_url 을 따로 정의 하여 사용
+#             # return redirect('/success_url/')
+#     else:
+#         form = PostForm(instance=post)
+#
+#     return render(request, 'instagram/post_form.html', {
+#         'form': form,
+#         'post': post,
+#     })
 
-    # 여기는 게시글 수정이므로 해당 게시글 작성자와... 현 로그인 사용자가 동일한지 점검 로직 필요
-    if request.user != post.author:
-        messages.error(request, '작성자만 수정할 수 있습니다.')
-        return redirect(post)
+# CBV 코딩 - 게시글 수정
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostForm
 
-    if request.method == "POST":
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            # 검증에 성공한 값들을 dict 타입으로 반환
-            # post = Post(**form.cleaned_data)
-            post = form.save()
-
-            # 신규 message 생성
-            messages.success(request, '포스팅을 수정했습니다.')
-
-            # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
-            # 있으므로 다음과 같이 호출 가능
-            # 즉, 등록 성공 시 상세뷰 페이지로 이동 노출 됨....
-            return redirect(post)
-            # 하지만, 등록 성공 시, 특정 url 로 가게 하려면??? success_url 을 따로 정의 하여 사용
-            # return redirect('/success_url/')
-    else:
-        form = PostForm(instance=post)
-
-    return render(request, 'instagram/post_form.html', {
-        'form': form,
-        'post': post,
-    })
+    # 본인이 작성한 게시글만 수정 가능 해야 함으로.. 이를 form_valid() 에서 처리
+    # 하지만.... 이러한 처리는 기본적으로 데코레이트(@~~)에서 보통 처리 하는 것이 적절함
+    # 그래서 본 form_valid() 에서는 제외
+    def form_valid(self, form):
+        messages.success(self.request, '포스팅을 수정 했습니다')
+        return super().form_valid(form)
 
 
-# FBV 코딩
-@login_required
-def post_delete(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+post_edit = PostUpdateView.as_view()
 
-    # 삭제 확인 하는 폼을 하나 보여주고....확인 후 삭제
-    if request.method == "POST":
-        post.delete()
-        messages.success(request, '포스팅을 삭제하였습니다.')
-        return redirect('instagram:post_list')
 
-    return render(request, 'instagram/post_confirm_delete.html', {
-        'post': post,
-    })
+# FBV 코딩 - 게시글 삭제
+# @login_required
+# def post_delete(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
+#
+#     # 삭제 확인 하는 폼을 하나 보여주고....확인 후 삭제
+#     if request.method == "POST":
+#         post.delete()
+#         messages.success(request, '포스팅을 삭제하였습니다.')
+#         return redirect('instagram:post_list')
+#
+#     return render(request, 'instagram/post_confirm_delete.html', {
+#         'post': post,
+#     })
+
+
+# CBV 코딩 - 게시글 사제
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('instagram:post_list')
+
+
+post_delete = PostDeleteView.as_view()
 
 
 # FBV 코딩
