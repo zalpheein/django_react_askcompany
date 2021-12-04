@@ -3,56 +3,76 @@ from django.contrib.auth.decorators import login_required
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from .models import Post
 # .forms 는 현재 경로를 의미
 # form_PostForm 는 form_PostForm.py 를 의미
-# import PostForm 의 PostForm 는 form_PostForm.py 파일의 class PostForm(forms.ModelForm) 객체인  PostForm 을 의미
+# import PostForm 의 PostForm 는 form_PostForm.py 파일의
+# class PostForm(forms.ModelForm) 객체인  PostForm 을 의미
 from .forms.form_PostForm import PostForm
 
 
-@login_required
-def post_new(request):
-    if request.method == "POST":
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            # 검증에 성공한 값들을 사전(dict) 타입으로 반환
-            # post = Post(**form.cleaned_data)
+# FBV 코딩 - 게시글 등록
+# @login_required
+# def post_new(request):
+#     if request.method == "POST":
+#         form = PostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             # 검증에 성공한 값들을 사전(dict) 타입으로 반환
+#             # post = Post(**form.cleaned_data)
+#
+#             # 넘겨 받은 값을 수정 도는 변경 하려고 할 경우, form.cleaned_data 을 사용 할것.
+#             # message = request.POST['필드명'] <== BAD
+#             # message = form.cleaned_data['필드명'] <== GOOD
+#
+#             post = form.save(commit=False)
+#             # request.user = 로그인 사용자를 의미... 그러므로 post_new() 함수는 로그인이 선행되어야 함
+#             # 즉, @login_required 라는 장식자를 선언 해두어야 함
+#             # 사용자 정의 모델폼 PostForm 이 다채우지 못한 필수 입력값을 채워(여기서는 author 값) 저장 수행
+#             post.author = request.user
+#             # 만약 IP 주소를 저장 해야할 경우, 모델에 해당 필드를 만들고... request.META['REMOTE_ADDR'] 값을 지정
+#             # REMOTE_ADDR 관련 문서
+#             #   https://docs.djangoproject.com/en/3.2/ref/request-response/
+#
+#             # 실제 디비에 저장 되는 시점
+#             post.save()
+#
+#             # 신규 message 생성
+#             messages.success(request, '포스팅을 저장했습니다.')
+#
+#             # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
+#             # 있으므로 다음과 같이 호출 가능
+#             # 즉, 등록 성공 시 상세뷰 페이지로 이동 노출 됨....
+#             return redirect(post)
+#             # 하지만, 등록 성공 시, 특정 url 로 가게 하려면??? success_url 을 따로 정의 하여 사용
+#             # return redirect('/success_url/')
+#     else:
+#         form = PostForm()
+#
+#     return render(request, 'instagram/post_form.html', {
+#         'form': form,
+#         'post': None,
+#     })
 
-            # 넘겨 받은 값을 수정 도는 변경 하려고 할 경우, form.cleaned_data 을 사용 할것.
-            # message = request.POST['필드명'] <== BAD
-            # message = form.cleaned_data['필드명'] <== GOOD
 
-            post = form.save(commit=False)
-            # request.user = 로그인 사용자를 의미... 그러므로 post_new() 함수는 로그인이 선행되어야 함
-            # 즉, @login_required 라는 장식자를 선언 해두어야 함
-            # 사용자 정의 모델폼 PostForm 이 다채우지 못한 필수 입력값을 채워(여기서는 author 값) 저장 수행
-            post.author = request.user
-            # 만약 IP 주소를 저장 해야할 경우, 모델에 해당 필드를 만들고... request.META['REMOTE_ADDR'] 값을 지정
-            # REMOTE_ADDR 관련 문서
-            #   https://docs.djangoproject.com/en/3.2/ref/request-response/
+# CBV 코딩 - 게시글 등록
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm
 
-            # 실제 디비에 저장 되는 시점
-            post.save()
+    # PostForm 클래스의 fields 에 author 필드가 없으므로..사용자 입력이 없다...
+    # 하지만 디비에선 필수 입력인....그래서 form_valid() 함수를 선언
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
 
-            # 신규 message 생성
-            messages.success(request, '포스팅을 저장했습니다.')
-
-            # models.py 에 정의된 Post 객체 내에 get_absolute_url() 함수가 이미 정의 되어
-            # 있으므로 다음과 같이 호출 가능
-            # 즉, 등록 성공 시 상세뷰 페이지로 이동 노출 됨....
-            return redirect(post)
-            # 하지만, 등록 성공 시, 특정 url 로 가게 하려면??? success_url 을 따로 정의 하여 사용
-            # return redirect('/success_url/')
-    else:
-        form = PostForm()
-
-    return render(request, 'instagram/post_form.html', {
-        'form': form,
-        'post': None,
-    })
+        return super().form_valid(form)
 
 
+post_new = PostCreateView.as_view()
+
+
+# FBV 코딩
 @login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -87,6 +107,7 @@ def post_edit(request, pk):
     })
 
 
+# FBV 코딩
 @login_required
 def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -102,9 +123,7 @@ def post_delete(request, pk):
     })
 
 
-
-
-# # FBV 코딩
+# FBV 코딩
 # def post_list(request):
 #     qs = Post.objects.all()
 #     q = request.GET.get('q', '')
@@ -138,7 +157,7 @@ post_list = ListView.as_view(model=Post, paginate_by=5)
 #         'post': post
 #     })
 
-
+# CBV 코딩
 post_detail = DetailView.as_view(model=Post)
 
 # 상기의 post_detail 은 모든 게시글을 보여준다..
@@ -161,8 +180,8 @@ post_detail = DetailView.as_view(model=Post)
 #             qs = qs.filter(is_public=True)
 #         return qs
 
-# 만약, 템플릿(즉, html 파일)에 추가 내용을 전달 하려고 하면….
-#   get_context_data() 함수를 사용...
+#    만약, 템플릿(즉, html 파일)에 추가 내용을 전달 하려고 하면….
+#    get_context_data() 함수를 사용...
 #    템플릿(즉, html 파일)에서 사용할 내용들을 사전(dictionary) 형태로 미리 준비 하는 함수…. 
 #    이 함수에 사전 형태도 정의 해두면…템플릿 즉 html 파일에서 사용 가능
 #       def get_context_data(self):
