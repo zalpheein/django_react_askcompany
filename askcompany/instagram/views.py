@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -56,7 +57,7 @@ from .forms.form_PostForm import PostForm
 
 
 # CBV 코딩 - 게시글 등록
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
 
@@ -65,6 +66,7 @@ class PostCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.author = self.request.user
+        messages.success(self.request, '포스팅을 저장했습니다.')
 
         return super().form_valid(form)
 
