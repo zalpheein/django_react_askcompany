@@ -6,4 +6,14 @@
         - 로그아웃 : AnonymousUser (파이썬 클래스) 인스턴스
     <h2>User : {{ user }}</h2>
     {{ user.is_authenticated }}
+
+    {% if user.profile %}
+        <table>
+            <ul>
+                <li>{{ user.profile.address }}</li>
+                <li>{{ user.profile.zipcode }}</li>
+            </ul>
+        </table>
+    {% endif %}
+
 {% endblock content %}
