@@ -41,8 +41,12 @@ def profile_edit(request):
     })
 
 
+def signup(request):
+    pass
 
 
+def logout(request):
+    pass
 
 
 
