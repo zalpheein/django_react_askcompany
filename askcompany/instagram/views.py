@@ -171,7 +171,7 @@ post_delete = PostDeleteView.as_view()
 # CBV 코딩
 class PostListView(LoginRequiredMixin, ListView):
     model = Post
-    paginate_by = 100
+    paginate_by = 10
 
 
 # post_list = ListView.as_view(model=Post, paginate_by=5)
