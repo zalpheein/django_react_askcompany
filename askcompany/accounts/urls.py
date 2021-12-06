@@ -1,10 +1,14 @@
 from django.contrib.auth.views import LoginView
 from django.urls import path
 from .import views
-
+from .forms.formLoginForm import LoginForm
 
 urlpatterns = [
-    path('login/', LoginView.as_view(template_name='accounts/login_form.html'), name='login'),
+    path('login/', LoginView.as_view(
+        # form_class=AuthenticationForm, # 명시하지 않으면...내부적으로 사용되는 form_class 임
+        form_clas=LoginForm,            # 사용자 정의 LoginForm...
+        template_name='accounts/login_form.html'
+    ), name='login'),
     path('logout/', views.logout, name='logout'),
 
     path('profile/', views.profile, name='profile'),
