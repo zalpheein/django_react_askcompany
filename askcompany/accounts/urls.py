@@ -6,7 +6,7 @@ from .forms.formLoginForm import LoginForm
 urlpatterns = [
     path('login/', LoginView.as_view(
         # form_class=AuthenticationForm, # 명시하지 않으면...내부적으로 사용되는 form_class 임
-        form_clas=LoginForm,            # 사용자 정의 LoginForm...
+        form_class=LoginForm,            # 사용자 정의 LoginForm...
         template_name='accounts/login_form.html'
     ), name='login'),
     path('logout/', views.logout, name='logout'),
