@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from .import views
 from .forms.LoginForm import LoginForm
@@ -9,7 +9,8 @@ urlpatterns = [
         form_class=LoginForm,            # 사용자 정의 LoginForm...
         template_name='accounts/login_form.html'
     ), name='login'),
-    path('logout/', views.logout, name='logout'),
+    # path('logout/', views.logout, name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),

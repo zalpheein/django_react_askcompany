@@ -4,6 +4,8 @@ from django.conf import settings
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse_lazy
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR 의 경로는.... django_react_akscompay/ 폴더임
 
@@ -137,7 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 STATIC_URL = '/static/'
-# STATIC_URL = 'https://s3.aws.com/afadfa/r4r45cx/rkrkaj/static/' 로 설정 될 수 있음
+# STATIC_URL = 'https://s3.aws.com/afadfa/r4r45cx/rkrkaj/static/' 로 설정 될 수도 있음
 
 # 개별 app 에 소속된 static 파일 저장 경로들이 최종적으로 모이는 장소
 # 즉, manage.py가 있는 폴더가 BASE_DIR 경로임 <================================
@@ -170,5 +172,6 @@ MESSAGE_TAGS = {
     messages_constants.ERROR: 'danger',
 }
 
-
+# LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
