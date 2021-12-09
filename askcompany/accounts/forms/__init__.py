@@ -1,2 +1,2 @@
-from .formProfileForm import ProfileForm
-from .formLoginForm import LoginForm
+from .ProfileForm import ProfileForm
+from .LoginForm import LoginForm
